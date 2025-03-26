@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // Note {} is required to warp the imported class if they are not default.
 // And {} is not needed for the default class
-import FirstComponent, { FirstSubComponent } from './components/learning_examples/FirstComponet'
+import FirstComponent, { FirstSubComponent } from './components/learning_examples/FirstComponent'
 import SecondComponent from './components/learning_examples/SecondComponent'
 import ThirdComponent from './components/learning_examples/ThirdComponent'
 // import logo from './logo.svg';
