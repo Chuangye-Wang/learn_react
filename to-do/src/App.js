@@ -1,25 +1,24 @@
-import logo from './logo.svg';
+import React, { Component } from 'react';
+// Note {} is required to warp the imported class if they are not default.
+// And {} is not needed for the default class
+import FirstComponent, { FirstSubComponent } from './components/learning_examples/FirstComponet'
+import SecondComponent from './components/learning_examples/SecondComponent'
+import ThirdComponent from './components/learning_examples/ThirdComponent'
+// import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+    render() {
+        return (
+            <div className="App">
+            My Hello World!
+            <FirstComponent></FirstComponent>
+            <FirstSubComponent></FirstSubComponent>
+            <SecondComponent></SecondComponent>
+            <ThirdComponent></ThirdComponent>
+            </div>
+        );
+    }
 }
 
 export default App;
