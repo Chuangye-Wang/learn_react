@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// Note {} is required to warp the imported class if they are not default.
+// Note {} is required to wrap the imported class if they are not default.
 // And {} is not needed for the default class
 import FirstComponent, { FirstSubComponent } from './components/learning_examples/FirstComponent'
 import SecondComponent from './components/learning_examples/SecondComponent'
