@@ -6,6 +6,7 @@ import SecondComponent from './components/learning_examples/SecondComponent'
 import ThirdComponent from './components/learning_examples/ThirdComponent'
 // import logo from './logo.svg';
 import './App.css';
+import TaskManager from "./components/learning_examples/TaskManager";
 
 class App extends Component {
     render() {
@@ -16,6 +17,7 @@ class App extends Component {
             <FirstSubComponent></FirstSubComponent>
             <SecondComponent></SecondComponent>
             <ThirdComponent></ThirdComponent>
+            <TaskManager></TaskManager>
             </div>
         );
     }
