@@ -59,6 +59,23 @@ function RenderLabelInput({task, handleFunc}) {
     )
 }
 
+function RenderAllInput({task, handleFunc}) {
+    return (
+        <>
+        <RenderTitleInput task={task} handleFunc={handleFunc}/>
+        <br/>
+        <RenderDescriptionInput task={task} handleFunc={handleFunc}/>
+        <br/>
+        <RenderAssigneeInput task={task} handleFunc={handleFunc}/>
+        <br/>
+        <RenderDueDateInput task={task} handleFunc={handleFunc}/>
+        <br/>
+        <RenderLabelInput task={task} handleFunc={handleFunc}/>
+        <br/>
+        </>
+    )
+}
+
 
 function TaskManager() {
     const [tasks, setTasks] = useState([]);
@@ -127,26 +144,7 @@ function TaskManager() {
             {/* Add Task Form */}
             <div style={{ marginBottom: "20px" }}>
                 <h2>Create New Task</h2>
-                <RenderTitleInput
-                    task={newTask} handleFunc={handleInputChange}
-                />
-                <br />
-                <RenderDescriptionInput
-                    task={newTask} handleFunc={handleInputChange}
-                />
-                <br />
-                <RenderAssigneeInput
-                    task={newTask} handleFunc={handleInputChange}
-                />
-                <br />
-                <RenderDueDateInput
-                    task={newTask} handleFunc={handleInputChange}
-                />
-                <br />
-                <RenderLabelInput
-                    task={newTask} handleFunc={handleInputChange}
-                />
-                <br />
+                <RenderAllInput task={newTask} handleFunc={handleInputChange}/>
                 <button onClick={handleAddTask} style={{ marginTop: "10px" }}>
                     Add Task
                 </button>
@@ -159,26 +157,7 @@ function TaskManager() {
                     <li key={index} style={{ marginBottom: "20px" }}>
                         {editIndex === index ? (
                             <>
-                                <RenderTitleInput
-                                    task={editTask} handleFunc={handleEditInputChange}
-                                />
-                                <br />
-                                <RenderDescriptionInput
-                                    task={editTask} handleFunc={handleEditInputChange}
-                                />
-                                <br />
-                                <RenderAssigneeInput
-                                    task={editTask} handleFunc={handleEditInputChange}
-                                />
-                                <br />
-                                <RenderDueDateInput
-                                    task={editTask} handleFunc={handleEditInputChange}
-                                />
-                                <br />
-                                <RenderLabelInput
-                                    task={editTask} handleFunc={handleEditInputChange}
-                                />
-                                <br />
+                                <RenderAllInput task={editTask} handleFunc={handleEditInputChange}/>
                                 <button onClick={handleSaveTask} style={{ marginTop: "10px" }}>
                                     Save
                                 </button>
