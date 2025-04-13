@@ -1,5 +1,65 @@
 import React, { useState } from "react";
 
+function RenderTitleInput({task, handleFunc}) {
+    return (
+        <input
+            type="text"
+            name="title"
+            placeholder="Title"
+            value={task.title}
+            onChange={handleFunc}
+        />
+    )
+}
+
+function RenderDescriptionInput({task, handleFunc}) {
+    return (
+        <textarea
+            name="description"
+            placeholder="Description"
+            value={task.description}
+            onChange={handleFunc}
+            style={{marginTop: "10px", width: "300px", height: "80px"}}
+        />
+    )
+}
+
+function RenderAssigneeInput({task, handleFunc}) {
+    return (
+        <input
+            type="text"
+            name="assignee"
+            placeholder="Assignee"
+            value={task.assignee}
+            onChange={handleFunc}
+        />
+    )
+}
+
+function RenderDueDateInput({task, handleFunc}) {
+    return (
+        <input
+            type="date"
+            name="dueDate"
+            value={task.dueDate}
+            onChange={handleFunc}
+        />
+    )
+}
+
+function RenderLabelInput({task, handleFunc}) {
+    return (
+        <input
+            type="text"
+            name="labels"
+            placeholder="Labels (comma-separated)"
+            value={task.labels}
+            onChange={handleFunc}
+        />
+    )
+}
+
+
 function TaskManager() {
     const [tasks, setTasks] = useState([]);
     const [newTask, setNewTask] = useState({
@@ -67,43 +127,24 @@ function TaskManager() {
             {/* Add Task Form */}
             <div style={{ marginBottom: "20px" }}>
                 <h2>Create New Task</h2>
-                <input
-                    type="text"
-                    name="title"
-                    placeholder="Title"
-                    value={newTask.title}
-                    onChange={handleInputChange}
+                <RenderTitleInput
+                    task={newTask} handleFunc={handleInputChange}
                 />
                 <br />
-                <textarea
-                    name="description"
-                    placeholder="Description"
-                    value={newTask.description}
-                    onChange={handleInputChange}
-                    style={{ marginTop: "10px", width: "300px", height: "80px" }}
+                <RenderDescriptionInput
+                    task={newTask} handleFunc={handleInputChange}
                 />
                 <br />
-                <input
-                    type="text"
-                    name="assignee"
-                    placeholder="Assignee"
-                    value={newTask.assignee}
-                    onChange={handleInputChange}
+                <RenderAssigneeInput
+                    task={newTask} handleFunc={handleInputChange}
                 />
                 <br />
-                <input
-                    type="date"
-                    name="dueDate"
-                    value={newTask.dueDate}
-                    onChange={handleInputChange}
+                <RenderDueDateInput
+                    task={newTask} handleFunc={handleInputChange}
                 />
                 <br />
-                <input
-                    type="text"
-                    name="labels"
-                    placeholder="Labels (comma-separated)"
-                    value={newTask.labels}
-                    onChange={handleInputChange}
+                <RenderLabelInput
+                    task={newTask} handleFunc={handleInputChange}
                 />
                 <br />
                 <button onClick={handleAddTask} style={{ marginTop: "10px" }}>
@@ -118,39 +159,24 @@ function TaskManager() {
                     <li key={index} style={{ marginBottom: "20px" }}>
                         {editIndex === index ? (
                             <>
-                                <input
-                                    type="text"
-                                    name="title"
-                                    value={editTask.title}
-                                    onChange={handleEditInputChange}
+                                <RenderTitleInput
+                                    task={editTask} handleFunc={handleEditInputChange}
                                 />
                                 <br />
-                                <textarea
-                                    name="description"
-                                    value={editTask.description}
-                                    onChange={handleEditInputChange}
-                                    style={{ marginTop: "10px", width: "300px", height: "80px" }}
+                                <RenderDescriptionInput
+                                    task={editTask} handleFunc={handleEditInputChange}
                                 />
                                 <br />
-                                <input
-                                    type="text"
-                                    name="assignee"
-                                    value={editTask.assignee}
-                                    onChange={handleEditInputChange}
+                                <RenderAssigneeInput
+                                    task={editTask} handleFunc={handleEditInputChange}
                                 />
                                 <br />
-                                <input
-                                    type="date"
-                                    name="dueDate"
-                                    value={editTask.dueDate}
-                                    onChange={handleEditInputChange}
+                                <RenderDueDateInput
+                                    task={editTask} handleFunc={handleEditInputChange}
                                 />
                                 <br />
-                                <input
-                                    type="text"
-                                    name="labels"
-                                    value={editTask.labels}
-                                    onChange={handleEditInputChange}
+                                <RenderLabelInput
+                                    task={editTask} handleFunc={handleEditInputChange}
                                 />
                                 <br />
                                 <button onClick={handleSaveTask} style={{ marginTop: "10px" }}>
