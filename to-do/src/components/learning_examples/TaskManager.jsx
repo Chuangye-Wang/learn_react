@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./TaskManager.css"; // Import the CSS file
 
 function RenderTitleInput({task, handleFunc}) {
     return (
@@ -86,19 +87,32 @@ function TaskManager() {
         dueDate: "",
         labels: "",
     });
-    const [editIndex, setEditIndex] = useState(null);
-    const [editTask, setEditTask] = useState(null);
+    const [isEditing, setIsEditing] = useState(false); // To check if in edit mode
+    const [editIndex, setEditIndex] = useState(null); // To track the task being edited
 
-    // Handle input change for new task
+    // Handle input changes
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setNewTask({ ...newTask, [name]: value });
     };
 
-    // Add Task
+    // Add a new task
     const handleAddTask = () => {
         if (newTask.title.trim() && newTask.description.trim()) {
-            setTasks([...tasks, newTask]);
+            if (isEditing) {
+                // Update the task in edit mode
+                const updatedTasks = tasks.map((task, index) =>
+                    index === editIndex ? newTask : task
+                );
+                setTasks(updatedTasks);
+                setIsEditing(false); // Exit edit mode
+                setEditIndex(null); // Reset edit index
+            } else {
+                // Add a new task if not editing
+                setTasks([...tasks, newTask]);
+            }
+
+            // Clear the form
             setNewTask({
                 title: "",
                 description: "",
@@ -109,83 +123,84 @@ function TaskManager() {
         }
     };
 
-    // Delete Task
+    // Delete a task
     const handleDeleteTask = (index) => {
         const updatedTasks = tasks.filter((_, i) => i !== index);
         setTasks(updatedTasks);
     };
 
-    // Enable Edit Mode
+    // Edit a task
     const handleEditTask = (index) => {
-        setEditIndex(index);
-        setEditTask(tasks[index]);
-    };
-
-    // Handle input change for editing task
-    const handleEditInputChange = (e) => {
-        const { name, value } = e.target;
-        setEditTask({ ...editTask, [name]: value });
-    };
-
-    // Save Edited Task
-    const handleSaveTask = () => {
-        const updatedTasks = tasks.map((task, i) =>
-            i === editIndex ? editTask : task
-        );
-        setTasks(updatedTasks);
-        setEditIndex(null);
-        setEditTask(null);
+        setNewTask(tasks[index]); // Populate the form with the selected task
+        setIsEditing(true); // Enable edit mode
+        setEditIndex(index); // Track which task is being edited
     };
 
     return (
-        <div style={{ padding: "20px" }}>
+        <div className="task-manager">
             <h1>Task Manager</h1>
 
             {/* Add Task Form */}
-            <div style={{ marginBottom: "20px" }}>
-                <h2>Create New Task</h2>
+            <div className="task-form">
+                <h2 className="add-edit-task">{isEditing ? "Edit Task" : "Add New Task"}</h2>
                 <RenderAllInput task={newTask} handleFunc={handleInputChange}/>
-                <button onClick={handleAddTask} style={{ marginTop: "10px" }}>
-                    Add Task
+                <button
+                    onClick={handleAddTask}
+                >
+                    {isEditing ? "Save Task" : "Add Task"}
                 </button>
             </div>
 
-            {/* Task List */}
+            {/* Task Table */}
             <h2>Task List</h2>
-            <ul>
-                {tasks.map((task, index) => (
-                    <li key={index} style={{ marginBottom: "20px" }}>
-                        {editIndex === index ? (
-                            <>
-                                <RenderAllInput task={editTask} handleFunc={handleEditInputChange}/>
-                                <button onClick={handleSaveTask} style={{ marginTop: "10px" }}>
-                                    Save
-                                </button>
-                            </>
-                        ) : (
-                            <>
-                                <strong>Title:</strong> {task.title}
-                                <br />
-                                <strong>Description:</strong> {task.description}
-                                <br />
-                                <strong>Assignee:</strong> {task.assignee}
-                                <br />
-                                <strong>Due Date:</strong> {task.dueDate}
-                                <br />
-                                <strong>Labels:</strong> {task.labels}
-                                <br />
+            <table
+                border="1"
+                className="task-table"
+            >
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Assignee</th>
+                    <th>Due Date</th>
+                    <th>Labels</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {tasks.length > 0 ? (
+                    tasks.map((task, index) => (
+                        <tr key={index}>
+                            <td>{task.title}</td>
+                            <td>{task.description}</td>
+                            <td>{task.assignee}</td>
+                            <td>{task.dueDate}</td>
+                            <td>{task.labels}</td>
+                            <td>
                                 <button
                                     onClick={() => handleEditTask(index)}
-                                    style={{ marginTop: "10px", marginRight: "10px" }}
+                                    className="action-button edit"
                                 >
                                     Edit
                                 </button>
-                                <button onClick={() => handleDeleteTask(index)}>Delete</button>
-                            </>
-                        )}
-                    </li>
-                ))}
-            </ul>
+                                <button
+                                    onClick={() => handleDeleteTask(index)}
+                                    className="action-button delete"
+                                >
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    ))
+                ) : (
+                    <tr>
+                        <td colSpan="6" style={{ textAlign: "center", padding: "10px" }}>
+                            No tasks available
+                        </td>
+                    </tr>
+                )}
+                </tbody>
+            </table>
         </div>
     );
 }
