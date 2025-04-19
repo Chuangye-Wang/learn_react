@@ -1,5 +1,19 @@
-import React, { useState } from "react";
-import "./TaskManager.css"; // Import the CSS file
+import React, {useEffect, useState} from "react";
+import "./TaskManager.css";
+import axios from "axios"; // Import the CSS file
+
+function RenderIDInput({task, handleFunc}) {
+    return (
+        <input
+            type="number"
+            name="id"
+            placeholder="ID"
+            value={task.id}
+            onChange={handleFunc}
+        />
+    )
+}
+
 
 function RenderTitleInput({task, handleFunc}) {
     return (
@@ -63,6 +77,8 @@ function RenderLabelInput({task, handleFunc}) {
 function RenderAllInput({task, handleFunc}) {
     return (
         <>
+        <RenderIDInput task={task} handleFunc={handleFunc}/>
+        <br/>
         <RenderTitleInput task={task} handleFunc={handleFunc}/>
         <br/>
         <RenderDescriptionInput task={task} handleFunc={handleFunc}/>
@@ -80,7 +96,14 @@ function RenderAllInput({task, handleFunc}) {
 
 function TaskManager() {
     const [tasks, setTasks] = useState([]);
+    useEffect(() => {
+        axios.get("http://127.0.0.1:8000")
+            .then(response => setTasks(response.data))
+            .catch(error => console.error("Error fetching tasks:", error));
+    }, []);
+
     const [newTask, setNewTask] = useState({
+        id: "",
         title: "",
         description: "",
         assignee: "",
@@ -101,19 +124,28 @@ function TaskManager() {
         if (newTask.title.trim() && newTask.description.trim()) {
             if (isEditing) {
                 // Update the task in edit mode
-                const updatedTasks = tasks.map((task, index) =>
-                    index === editIndex ? newTask : task
+                const updatedTasks = tasks.map(task =>
+                    task.id === editIndex ? newTask : task
                 );
                 setTasks(updatedTasks);
                 setIsEditing(false); // Exit edit mode
                 setEditIndex(null); // Reset edit index
             } else {
                 // Add a new task if not editing
-                setTasks([...tasks, newTask]);
+                axios
+                    .post("http://127.0.0.1:8000", newTask) // Replace with your Django API endpoint
+                    .then((response) => {
+                        setTasks([...tasks, newTask]); // Add the new task to the local state
+                    })
+                    .catch((error) => {
+                        console.error("Error adding task:", error);
+                    });
+                // setTasks([...tasks, newTask]);
             }
 
             // Clear the form
             setNewTask({
+                id: "",
                 title: "",
                 description: "",
                 assignee: "",
@@ -131,7 +163,13 @@ function TaskManager() {
 
     // Edit a task
     const handleEditTask = (index) => {
+        console.log("new task is: ")
+        console.log({newTask});
         setNewTask(tasks[index]); // Populate the form with the selected task
+        console.log("task is: ")
+        console.log({tasks});
+        console.log("new task is: ")
+        console.log({newTask});
         setIsEditing(true); // Enable edit mode
         setEditIndex(index); // Track which task is being edited
     };
@@ -139,10 +177,11 @@ function TaskManager() {
     return (
         <div className="task-manager">
             <h1>Task Manager</h1>
-
+            {/*<h1>{tasks}</h1>*/}
             {/* Add Task Form */}
             <div className="task-form">
                 <h2 className="add-edit-task">{isEditing ? "Edit Task" : "Add New Task"}</h2>
+                <h2>{newTask.title}</h2>
                 <RenderAllInput task={newTask} handleFunc={handleInputChange}/>
                 <button
                     onClick={handleAddTask}
@@ -159,6 +198,7 @@ function TaskManager() {
             >
                 <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Title</th>
                     <th>Description</th>
                     <th>Assignee</th>
@@ -169,8 +209,9 @@ function TaskManager() {
                 </thead>
                 <tbody>
                 {tasks.length > 0 ? (
-                    tasks.map((task, index) => (
-                        <tr key={index}>
+                    tasks.map(task => (
+                        <tr key={task.id}>
+                            <td>{task.id}</td>
                             <td>{task.title}</td>
                             <td>{task.description}</td>
                             <td>{task.assignee}</td>
@@ -178,13 +219,13 @@ function TaskManager() {
                             <td>{task.labels}</td>
                             <td>
                                 <button
-                                    onClick={() => handleEditTask(index)}
+                                    onClick={() => handleEditTask(task.id)}
                                     className="action-button edit"
                                 >
                                     Edit
                                 </button>
                                 <button
-                                    onClick={() => handleDeleteTask(index)}
+                                    onClick={() => handleDeleteTask(task.id)}
                                     className="action-button delete"
                                 >
                                     Delete
