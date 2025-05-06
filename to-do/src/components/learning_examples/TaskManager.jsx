@@ -6,7 +6,7 @@ function RenderIDInput({task, handleFunc}) {
     return (
         <input
             type="number"
-            name="id"
+            name="task id"
             placeholder="ID"
             value={task.id}
             onChange={handleFunc}
@@ -154,7 +154,6 @@ function TaskManager() {
             });
         }
     };
-
     // Delete a task
     const handleDeleteTask = (index) => {
         const updatedTasks = tasks.filter((_, i) => i !== index);
@@ -163,13 +162,7 @@ function TaskManager() {
 
     // Edit a task
     const handleEditTask = (index) => {
-        console.log("new task is: ")
-        console.log({newTask});
         setNewTask(tasks[index]); // Populate the form with the selected task
-        console.log("task is: ")
-        console.log({tasks});
-        console.log("new task is: ")
-        console.log({newTask});
         setIsEditing(true); // Enable edit mode
         setEditIndex(index); // Track which task is being edited
     };
@@ -181,7 +174,6 @@ function TaskManager() {
             {/* Add Task Form */}
             <div className="task-form">
                 <h2 className="add-edit-task">{isEditing ? "Edit Task" : "Add New Task"}</h2>
-                <h2>{newTask.title}</h2>
                 <RenderAllInput task={newTask} handleFunc={handleInputChange}/>
                 <button
                     onClick={handleAddTask}
@@ -198,7 +190,7 @@ function TaskManager() {
             >
                 <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>TASK ID</th>
                     <th>Title</th>
                     <th>Description</th>
                     <th>Assignee</th>

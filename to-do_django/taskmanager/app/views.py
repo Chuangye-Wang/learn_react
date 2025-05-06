@@ -1,7 +1,4 @@
-from django.shortcuts import render
-
 from rest_framework.views import APIView
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Task
@@ -10,7 +7,8 @@ from .serializers import TaskSerializer
 
 class TaskView(APIView):
     def get(self, request):
-        keys = ["title", "description", "assignee", "due_date", "labels"]
+        # don't forget to add the keys that you want to show on the DRF page.
+        keys = ["id", "title", "description", "assignee", "due_date", "labels"]
         tasks = [{key: getattr(task, key) for key in keys} for task in Task.objects.all()]
 
         return Response(tasks)
