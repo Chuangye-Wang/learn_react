@@ -6,7 +6,7 @@ function RenderIDInput({task, handleFunc}) {
     return (
         <input
             type="number"
-            name="task id"
+            name="id"
             placeholder="ID"
             value={task.id}
             onChange={handleFunc}
@@ -155,16 +155,27 @@ function TaskManager() {
         }
     };
     // Delete a task
-    const handleDeleteTask = (index) => {
-        const updatedTasks = tasks.filter((_, i) => i !== index);
-        setTasks(updatedTasks);
+    const handleDeleteTask = (taskId) => {
+        axios.delete(`http://127.0.0.1:8000/task/${taskId}/`,
+            // {
+            //     withCredentials: true,
+            //     headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        )
+            .then(() => {
+                const updatedTasks = tasks.filter((task) => task.id !== taskId);
+                setTasks(updatedTasks);
+            })
+            .catch((error) => {
+                console.error("Error deleting task:", error, `http://127.0.0.1:8000/task/${taskId}/`);
+            });
     };
 
     // Edit a task
-    const handleEditTask = (index) => {
-        setNewTask(tasks[index]); // Populate the form with the selected task
+    const handleEditTask = (taskId) => {
+        console.log(tasks[taskId]);
+        setNewTask(tasks[taskId]); // Populate the form with the selected task
         setIsEditing(true); // Enable edit mode
-        setEditIndex(index); // Track which task is being edited
+        setEditIndex(taskId); // Track which task is being edited
     };
 
     return (
