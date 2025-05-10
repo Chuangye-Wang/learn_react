@@ -123,13 +123,20 @@ function TaskManager() {
     const handleAddTask = () => {
         if (newTask.title.trim() && newTask.description.trim()) {
             if (isEditing) {
-                // Update the task in edit mode
-                const updatedTasks = tasks.map(task =>
-                    task.id === editIndex ? newTask : task
-                );
-                setTasks(updatedTasks);
-                setIsEditing(false); // Exit edit mode
-                setEditIndex(null); // Reset edit index
+                axios
+                    .put(`http://127.0.0.1:8000/task/${newTask.id}/`, newTask) // Replace with your Django API endpoint
+                    .then((response) => {
+                        // Update the task in edit mode
+                        const updatedTasks = tasks.map(task =>
+                            task.id === editIndex ? newTask : task
+                        );
+                        setTasks(updatedTasks);
+                        setIsEditing(false); // Exit edit mode
+                        setEditIndex(null); // Reset edit index
+                    })
+                    .catch((error) => {
+                        console.error("Error adding task:", error);
+                    });
             } else {
                 // Add a new task if not editing
                 axios
@@ -172,8 +179,17 @@ function TaskManager() {
 
     // Edit a task
     const handleEditTask = (taskId) => {
-        console.log(tasks[taskId]);
-        setNewTask(tasks[taskId]); // Populate the form with the selected task
+        // find match id
+        const taskToEdit = tasks.find((task) => task.id === taskId) || {
+            id: "",
+            title: "",
+            description: "",
+            assignee: "",
+            dueDate: "",
+            labels: "",
+        };
+        console.log(taskToEdit)
+        setNewTask(taskToEdit); // Populate the form with the selected task
         setIsEditing(true); // Enable edit mode
         setEditIndex(taskId); // Track which task is being edited
     };
