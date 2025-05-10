@@ -3,7 +3,9 @@ from .models import Task
 
 
 class TaskSerializer(serializers.ModelSerializer):
-    # task_id = serializers.IntegerField(source='id', read_only=True)
+    # To make id to be post or written. Otherwise, it is automatically generated and
+    # can only be read
+    id = serializers.IntegerField()
 
     class Meta:
         model = Task

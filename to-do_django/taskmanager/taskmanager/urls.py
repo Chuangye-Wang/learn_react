@@ -17,9 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from app import views
+# from rest_framework.routers import DefaultRouter
+
+# router = DefaultRouter()
+# router.register(r'todos', views.TaskView.as_view(), basename='todo')
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('', views.TaskView.as_view(), name='task list'),
-    path("task/", views.TaskView.as_view(), name="task")
+    path("task/", views.TaskView.as_view(), name="task"),
+    path('task/<int:pk>/', views.TaskItemView.as_view(), name='task item'),
+    # Add the URL pattern
+    # path('api/', include(router.urls)),
 ]
