@@ -55,8 +55,8 @@ function RenderDueDateInput({task, handleFunc}) {
     return (
         <input
             type="date"
-            name="dueDate"
-            value={task.dueDate}
+            name="due_date"
+            value={task.due_date}
             onChange={handleFunc}
         />
     )
@@ -107,7 +107,7 @@ function TaskManager() {
         title: "",
         description: "",
         assignee: "",
-        dueDate: "",
+        due_date: "",
         labels: "",
     });
     const [isEditing, setIsEditing] = useState(false); // To check if in edit mode
@@ -156,7 +156,7 @@ function TaskManager() {
                 title: "",
                 description: "",
                 assignee: "",
-                dueDate: "",
+                due_date: "",
                 labels: "",
             });
         }
@@ -185,10 +185,10 @@ function TaskManager() {
             title: "",
             description: "",
             assignee: "",
-            dueDate: "",
+            due_date: "",
             labels: "",
         };
-        console.log(taskToEdit)
+        // console.log(taskToEdit);
         setNewTask(taskToEdit); // Populate the form with the selected task
         setIsEditing(true); // Enable edit mode
         setEditIndex(taskId); // Track which task is being edited
@@ -234,7 +234,7 @@ function TaskManager() {
                             <td>{task.title}</td>
                             <td>{task.description}</td>
                             <td>{task.assignee}</td>
-                            <td>{task.dueDate}</td>
+                            <td>{task.due_date}</td>
                             <td>{task.labels}</td>
                             <td>
                                 <button
